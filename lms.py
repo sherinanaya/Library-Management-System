@@ -67,23 +67,22 @@ def main_page(books, username):
         sys.exit()
     else:   
         print("Invalid input choice\n")
- 
+        
 #Listing the books function
 def listt():
-    with open("/Users/apple/Desktop/Sherin/VIT/Mini Project- Libraray Managament/Bookshelf.txt", "r") as file:
-        Lines = file.readlines()
+    books = load_books()
         
-        #formatting heading
-        print(f"{'Title' : ^21}{'Author' : ^32}{'Published Date' : ^20}{'Available to Lend?' : ^15}") 
-        count = 0
+    #formatting heading
+    print(f"{'Title' : ^21}{'Author' : ^32}{'Published Date' : ^20}{'Available to Lend?' : ^15}") 
+    count = 0
         
-        # Strips the newline character
-        for line in Lines:
-            count += 1
-            items = line.split(",")
-            #formatting contents
-            print(count, f"{items[0] : <30}{items[1] : <22}{items[2] : ^20}{items[3] : ^10}")
-             
+    for book in books:
+        count += 1
+        bkstr = ','.join(map(str, book))
+        items = bkstr.split(",")
+        #formatting contents
+        print(count, f"{items[0] : <30}{items[1] : <22}{items[2] : ^20}{items[3] : ^10}")
+     
 #Lending the book function            
 def lend(books, username):
 
@@ -220,8 +219,13 @@ def search_menu(books, username):
     file.close()
         
     #print(bks)
-
-    inp = int(input("\nEnter your search choice from above: "))
+    
+    
+    try:
+        inp = int(input("\nEnter your search choice from above: "))
+    except ValueError:
+        print("Invalid input. Please enter an integer.")
+        search_menu(books, username)
     
     if inp == 1:
         search_func(bks, username, 1)
@@ -302,9 +306,3 @@ else:
     print("Login successful!")
     books = load_books()
     main_page(books,user)
-
-    
-
-
-    
-
